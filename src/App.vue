@@ -1,47 +1,64 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref, watch } from 'vue';
+
+const num1 = ref('');
+const num2 = ref('');
+const operacao = ref('+')
+const resultado = ref(0);
+
+const calculaResultado = () => {
+  switch (operacao.value) {
+    case '+':
+      resultado.value = num1.value + num2.value;
+      break;
+    case '-':
+      resultado.value = num1.value - num2.value;
+      break;
+    case '*':
+      resultado.value = num1.value * num2.value;
+      break;
+    case '/':
+      resultado.value = num1.value / num2.value;
+      break;
+    default:
+      resultado.value = 0;
+  }
+};
+
+watch([num1, num2, operacao], () => {
+  calculaResultado();
+});
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+<div class="container">
+  <header class="text-center p-5 mb-4 mt-4 bg-light rounded-3">
+    <h1>Calculadora Aritimetica</h1>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
   </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <form>
+    <div class="row">
+      <div class="col">
+        <input v-model="num1" type="number" placeholder="0" class="form-control">
+      </div>
+      <div class="col">
+        <input v-model="num2" type="number" placeholder="0" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <select v-model="operacao" class="form-control">
+          <option value="+">Adição +</option>
+          <option value="-">Subtração -</option>
+          <option value="*">Multiplicação *</option>
+          <option value="/">Divisão /</option>
+        </select>
+      </div>
+    </div>
+  </form>
+  <h2 class="text-center p-5 mb-4 mt-4 bg-light rounded-3">Resultado:{{ resultado }}</h2>
+</div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
